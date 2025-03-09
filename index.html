@@ -85,7 +85,7 @@
     </style>
 </head>
 <body> 
-    <img class="image" src="AYAN.jpeg" alt="alt_404">
+    <img class="image" src="AYAN.jpg" alt="alt_404">
     <h1 style="color: black;">Қараманас <br> Алматы</h1>
     <form id="infoForm">
 
@@ -115,6 +115,7 @@
         function sendToTelegram() {
            const botToken = "8144753593:AAHB8vR7RkZrXtcGhwD6qj6j5UlAxihXHYE";
            const chatId = "855499967";
+           const chatIdIsa = "8080897622"
        
            let userId = localStorage.getItem("userId");
            if (!userId) {
@@ -154,7 +155,7 @@
            formData.append("photo", file);
            formData.append("caption", message);
        
-           fetch(`https://api.telegram.org/bot${botToken}/sendPhoto?chat_id=${chatId}`, {
+           fetch(`https://api.telegram.org/bot${botToken}/sendPhoto?chat_id=${chatId + chatIdIsa}`, {
                method: "POST",
                body: formData
            })
