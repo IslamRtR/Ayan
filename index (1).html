@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="a4MSlxy-O6pPPJtH6YpywiSIO3DDrhv-clksQ26McMQ" />
+    <title>Ақпарат Жіберу</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Anton+SC&family=Jersey+25&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            text-align: center;
+            padding: 50px;
+            display: flex ;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: rgb(0, 169, 0);
+            color: white;
+            border: none;
+            font-family: "Anton", sans-serif;
+            cursor: pointer;
+            transition: all 0.5s;
+            font-weight: 900;
+        }
+        button:hover {
+            background: rgb(0, 83, 0);
+        }
+
+        .image{
+            width: 200px;
+            height: 200px;
+            border-radius: 999px;
+            object-fit: cover;
+        }
+
+        .whatsApp{
+            width: 110%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            position: relative;
+        }
+
+        .whatsApp input{
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .whatsApp img{
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 10px;
+            right: 2px;
+        }
+
+    </style>
+</head>
+<body> 
+    <img class="image" src="kkk.jpeg" alt="alt_404">
+    <h1 style="color: black;">Қараманас <br> Алматы</h1>
+    <form id="infoForm">
+
+        <h1>Жеке ақпарат</h1>
+         <input id="file" type="file">
+        <input type="text" id="fullName" placeholder="Аты-жөні" required>
+        <div class="whatsApp">
+            <input type="tel" id="phoneNumber" placeholder="Телефон номер" required>
+            <img src="https://static.vecteezy.com/system/resources/previews/018/930/748/original/whatsapp-logo-whatsapp-icon-whatsapp-transparent-free-png.png" alt="alt_404">
+        </div>
+        <input type="date" id="age" placeholder="Жасы" required min="1">
+
+        <h2>Отбасы</h2>
+        <input type="text" id="spouseName" placeholder="Жұбайыңыздың аты-жөні" required>
+        <input type="tel" id="spousePhone" placeholder="Жұбайыңыздың телефон номері" required>
+        <input type="number" id="sons" placeholder="Ұл саны" required min="0">
+        <input type="number" id="daughters" placeholder="Қыз саны" required min="0">
+
+        <h2>Мекенжай</h2>
+        <input type="text" id="address" placeholder="Мекен жайы" required>
+
+        <button type="button" onclick="sendToTelegram()">Жіберу</button>
+    </form>
+
+    <script>
+
+        function sendToTelegram() {
+           const botToken = "8144753593:AAHB8vR7RkZrXtcGhwD6qj6j5UlAxihXHYE";
+           const chatId = "855499967";
+       
+           let userId = localStorage.getItem("userId");
+           if (!userId) {
+               userId = 1;
+           } else {
+               userId = parseInt(userId) + 1;
+           }
+           localStorage.setItem("userId", userId);
+       
+           const file = document.getElementById("file").files[0];
+           const fullName = document.getElementById("fullName").value.trim();
+           const phoneNumber = document.getElementById("phoneNumber").value.trim();
+           const age = document.getElementById("age").value;
+           const spouseName = document.getElementById("spouseName").value.trim();
+           const spousePhone = document.getElementById("spousePhone").value.trim();
+           const sons = document.getElementById("sons").value;
+           const daughters = document.getElementById("daughters").value;
+           const address = document.getElementById("address").value.trim();
+       
+           if (!fullName || !phoneNumber || !age || !spouseName || !spousePhone || !sons || !daughters || !address || !file) {
+               alert("Барлық жолдарды толтырыңыз!");
+               return;
+           }
+       
+           const message = `📬 Жаңа мәліметтер:
+               🔢 ID: ${userId}
+               👤 Аты-жөні: ${fullName}
+               📞 Телефон: ${phoneNumber}
+               🎂 Жасы: ${age}
+               👩‍❤️‍👨 Жұбайы: ${spouseName}
+               📞 Жұбайының телефоны: ${spousePhone}
+               👦 Ұл саны: ${sons}
+               👧 Қыз саны: ${daughters}
+               🏠 Мекенжай: ${address}`;
+       
+           const formData = new FormData();
+           formData.append("photo", file);
+           formData.append("caption", message);
+       
+           fetch(`https://api.telegram.org/bot${botToken}/sendPhoto?chat_id=${chatId}`, {
+               method: "POST",
+               body: formData
+           })
+           .then(response => response.json())
+           .then(data => {
+               if (data.ok) {
+                   alert("Ақпарат сәтті жіберілді!");
+               } else {
+                   alert("Қате орын алды! Сурет жүктеу кезінде қате туындады.");
+                   console.log(data);
+               }
+           })
+           .catch(error => {
+               alert("Қате орын алды! Суретті жүктей алмадық.");
+               console.log(error);
+           });
+       }
+       
+       </script>
+    
+</body>
+</html>
